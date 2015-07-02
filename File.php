@@ -15,7 +15,11 @@ namespace yii2tech\sitemap;
  * use yii2tech\sitemap\File;
  *
  * $siteMapFile = new File();
- * $siteMapFile->writeUrl('http://mydomain.com/mycontroller/myaction', '2012-06-28', 'daily', '0.7');
+ * $siteMapFile->writeUrl('http://mydomain.com/mycontroller/myaction', [
+ *     'lastModified' => '2012-06-28',
+ *     'changeFrequency' => 'daily',
+ *     'priority' => '0.7'
+ * ]);
  * ...
  * $siteMapFile->close();
  * ```
@@ -38,7 +42,7 @@ class File extends BaseFile
     const CHECK_FREQUENCY_NEVER = 'never';
 
     /**
-     * This methods is invoked after the file is actually opened for writing.
+     * @inheritdoc
      */
     protected function afterOpen()
     {
@@ -47,7 +51,7 @@ class File extends BaseFile
     }
 
     /**
-     * This method is invoked before the file is actually closed.
+     * @inheritdoc
      */
     protected function beforeClose()
     {
@@ -58,38 +62,45 @@ class File extends BaseFile
     /**
      * Writes the URL block into the file.
      * @param string $url page URL.
-     * @param string|null $lastModifiedDate last modified date in format Y-m-d,
-     * if null given the current date will be used.
-     * @param string|null $changeFrequency page change frequency, the following values can be passed:
-     * <ul>
-     * <li>always</li>
-     * <li>hourly</li>
-     * <li>daily</li>
-     * <li>weekly</li>
-     * <li>monthly</li>
-     * <li>yearly</li>
-     * <li>never</li>
-     * </ul>
-     * @param null $priority URL search priority, by default '0.5' will be used
+     * @param array $options options list, valid options are:
+     * - 'lastModified' - string|integer, last modified date in format Y-m-d or timestamp.
+     *   by default current date will be used.
+     * - 'changeFrequency' - string, page change frequency, the following values can be passed:
+     *
+     *   * always
+     *   * hourly
+     *   * daily
+     *   * weekly
+     *   * monthly
+     *   * yearly
+     *   * never
+     *
+     *   by default 'daily' will be used. You may use constants defined in this class here.
+     * - 'priority' - string|float URL search priority in range 0..1, by default '0.5' will be used
      * @return integer the number of bytes written.
      */
-    public function writeUrl($url, $lastModifiedDate = null, $changeFrequency = null, $priority = null)
+    public function writeUrl($url, array $options = [])
     {
         $this->incrementEntriesCount();
         $xmlCode = '<url>';
         $xmlCode .= "<loc>{$url}</loc>";
-        if ($lastModifiedDate === null) {
-            $lastModifiedDate = date('Y-m-d');
+
+        $options = array_merge(
+            [
+                'lastModified' => date('Y-m-d'),
+                'changeFrequency' => self::CHECK_FREQUENCY_DAILY,
+                'priority' => '0.5',
+            ],
+            $options
+        );
+        if (ctype_digit($options['lastModified'])) {
+            $options['lastModified'] = date('Y-m-d', $options['lastModified']);
         }
-        $xmlCode .= "<lastmod>{$lastModifiedDate}</lastmod>";
-        if ($changeFrequency === null) {
-            $changeFrequency = self::CHECK_FREQUENCY_DAILY;
-        }
-        $xmlCode .= "<changefreq>{$changeFrequency}</changefreq>";
-        if (empty($priority)) {
-            $priority = '0.5';
-        }
-        $xmlCode .= "<priority>{$priority}</priority>";
+
+        $xmlCode .= "<lastmod>{$options['lastModified']}</lastmod>";
+        $xmlCode .= "<changefreq>{$options['changeFrequency']}</changefreq>";
+        $xmlCode .= "<priority>{$options['priority']}</priority>";
+
         $xmlCode .= '</url>';
         return $this->write($xmlCode);
     }

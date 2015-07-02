@@ -29,7 +29,7 @@ class IndexFileTest extends TestCase
         $siteMapIndexFile = new IndexFile();
 
         $testFileBaseUrl = 'http://test.file/base/url';
-        $this->assertTrue($siteMapIndexFile->setFileBaseUrl($testFileBaseUrl), 'Unable to set file base URL!');
+        $siteMapIndexFile->setFileBaseUrl($testFileBaseUrl);
         $this->assertEquals($testFileBaseUrl, $siteMapIndexFile->getFileBaseUrl(), 'Unable to set file base URL correctly!');
     }
 

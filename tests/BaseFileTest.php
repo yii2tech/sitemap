@@ -3,7 +3,6 @@
 namespace yii2tech\tests\unit\sitemap;
 
 use Yii;
-use yii\helpers\FileHelper;
 use yii2tech\sitemap\BaseFile;
 
 /**

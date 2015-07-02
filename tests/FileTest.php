@@ -42,10 +42,14 @@ class FileTest extends TestCase
         $siteMapFile = $this->createSiteMapFile();
 
         $testUrl = 'http://test.url';
-        $testLastModifiedDate = date('Y-m-d');
+        $testLastModifiedDate = '2010-07-15';
         $testChangeFrequency = 'test_frequency';
-        $testPriority = rand(1, 10)/10;
-        $siteMapFile->writeUrl($testUrl, $testLastModifiedDate, $testChangeFrequency, $testPriority);
+        $testPriority = 0.2;
+        $siteMapFile->writeUrl($testUrl, [
+            'lastModified' => $testLastModifiedDate,
+            'changeFrequency' => $testChangeFrequency,
+            'priority' => $testPriority
+        ]);
 
         $siteMapFile->close();
 

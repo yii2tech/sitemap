@@ -23,7 +23,7 @@ use yii\helpers\FileHelper;
  * use yii2tech\sitemap\IndexFile;
  *
  * $siteMapIndexFile = new IndexFile();
- * $siteMapIndexFile->writeUpFromPath('/home/www/html/myproject/sitemaps');
+ * $siteMapIndexFile->writeUpFromPath('@app/web/sitemap');
  * ```
  *
  * If source site map files and an index file are in the same directory, you may use [[writeUp()]].
@@ -33,6 +33,7 @@ use yii\helpers\FileHelper;
  * @see http://www.sitemaps.org/
  *
  * @property string $fileBaseUrl base URL for the directory, which contains the site map files.
+ * If not set URL to 'sitemap' folder under current web root will be used.
  *
  * @author Paul Klimov <klimov.paul@gmail.com>
  * @since 1.0
@@ -48,14 +49,19 @@ class IndexFile extends BaseFile
      */
     private $_fileBaseUrl = '';
 
-    // Set / Get :
 
+    /**
+     * @param string $fileBaseUrl base URL for the directory, which contains the site map files.
+     * Path alias can be used here.
+     */
     public function setFileBaseUrl($fileBaseUrl)
     {
         $this->_fileBaseUrl = Yii::getAlias($fileBaseUrl);
-        return true;
     }
 
+    /**
+     * @return string base URL for the directory, which contains the site map files.
+     */
     public function getFileBaseUrl()
     {
         if (empty($this->_fileBaseUrl)) {
@@ -75,7 +81,7 @@ class IndexFile extends BaseFile
     }
 
     /**
-     * This methods is invoked after the file is actually opened for writing.
+     * @inheritdoc
      */
     protected function afterOpen()
     {
@@ -84,7 +90,7 @@ class IndexFile extends BaseFile
     }
 
     /**
-     * This method is invoked before the file is actually closed.
+     * @inheritdoc
      */
     protected function beforeClose()
     {
@@ -95,7 +101,7 @@ class IndexFile extends BaseFile
     /**
      * Writes the site map block into the file.
      * @param string $siteMapFileUrl site map file URL.
-     * @param string|null $lastModifiedDate last modified date in format Y-m-d,
+     * @param string|integer|null $lastModifiedDate last modified timestamp or date in format Y-m-d,
      * if null given the current date will be used.
      * @return integer the number of bytes written.
      */
@@ -106,6 +112,8 @@ class IndexFile extends BaseFile
         $xmlCode .= "<loc>{$siteMapFileUrl}</loc>";
         if ($lastModifiedDate === null) {
             $lastModifiedDate = date('Y-m-d');
+        } elseif (ctype_digit($lastModifiedDate)) {
+            $lastModifiedDate = date('Y-m-d', $lastModifiedDate);
         }
         $xmlCode .= "<lastmod>{$lastModifiedDate}</lastmod>";
         $xmlCode .= '</sitemap>';
