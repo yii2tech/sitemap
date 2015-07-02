@@ -10,7 +10,9 @@ namespace yii2tech\sitemap;
 use Yii;
 use yii\base\Exception;
 use yii\base\Object;
+use yii\di\Instance;
 use yii\helpers\FileHelper;
+use yii\web\UrlManager;
 
 /**
  * BaseFile is a base class for the sitemap XML files.
@@ -18,6 +20,7 @@ use yii\helpers\FileHelper;
  * @see http://www.sitemaps.org/
  *
  * @property integer $entriesCount integer the count of entries written into the file, this property is read-only.
+ * @property UrlManager|array|string $urlManager the URL manager object or the application component ID of the URL manager.
  *
  * @author Paul Klimov <klimov.paul@gmail.com>
  * @since 1.0
@@ -49,6 +52,10 @@ abstract class BaseFile extends Object
      * @var integer the count of entries written into the file.
      */
     private $_entriesCount = 0;
+    /**
+     * @var UrlManager|array|string the URL manager object or the application component ID of the URL manager.
+     */
+    private $_urlManager = 'urlManager';
 
 
     /**
@@ -66,6 +73,25 @@ abstract class BaseFile extends Object
     public function getEntriesCount()
     {
         return $this->_entriesCount;
+    }
+
+    /**
+     * @param UrlManager|array|string $urlManager
+     */
+    public function setUrlManager($urlManager)
+    {
+        $this->_urlManager = $urlManager;
+    }
+
+    /**
+     * @return UrlManager
+     */
+    public function getUrlManager()
+    {
+        if (!is_object($this->_urlManager)) {
+            $this->_urlManager = Instance::ensure($this->_urlManager, UrlManager::className());
+        }
+        return $this->_urlManager;
     }
 
     /**

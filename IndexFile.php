@@ -76,7 +76,7 @@ class IndexFile extends BaseFile
      */
     protected function defaultFileBaseUrl()
     {
-        $urlManager = Yii::$app->urlManager;
+        $urlManager = $this->getUrlManager();
         return $urlManager->getHostInfo() . $urlManager->getBaseUrl() . '/sitemap';
     }
 

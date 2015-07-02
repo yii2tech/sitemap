@@ -15,6 +15,8 @@ namespace yii2tech\sitemap;
  * use yii2tech\sitemap\File;
  *
  * $siteMapFile = new File();
+ * $siteMapFile->writeUrl(['site/index']);
+ * $siteMapFile->writeUrl(['site/contact'], ['priority' => '0.4']);
  * $siteMapFile->writeUrl('http://mydomain.com/mycontroller/myaction', [
  *     'lastModified' => '2012-06-28',
  *     'changeFrequency' => 'daily',
@@ -61,7 +63,7 @@ class File extends BaseFile
 
     /**
      * Writes the URL block into the file.
-     * @param string $url page URL.
+     * @param string|array $url page URL or params.
      * @param array $options options list, valid options are:
      * - 'lastModified' - string|integer, last modified date in format Y-m-d or timestamp.
      *   by default current date will be used.
@@ -82,6 +84,11 @@ class File extends BaseFile
     public function writeUrl($url, array $options = [])
     {
         $this->incrementEntriesCount();
+
+        if (!is_string($url)) {
+            $url = $this->getUrlManager()->createAbsoluteUrl($url);
+        }
+
         $xmlCode = '<url>';
         $xmlCode .= "<loc>{$url}</loc>";
 

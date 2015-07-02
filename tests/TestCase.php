@@ -47,6 +47,7 @@ class TestCase extends \PHPUnit_Framework_TestCase
                 'urlManager' => [
                     'hostInfo' => 'http://test.com',
                     'baseUrl' => '/',
+                    'scriptUrl' => '/index.php',
                 ],
             ],
         ], $config));

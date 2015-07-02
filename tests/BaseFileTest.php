@@ -3,6 +3,7 @@
 namespace yii2tech\tests\unit\sitemap;
 
 use Yii;
+use yii\web\UrlManager;
 use yii2tech\sitemap\BaseFile;
 
 /**
@@ -22,6 +23,24 @@ class BaseFileTest extends TestCase
     }
 
     // Tests:
+
+    public function testSetupUrlManager()
+    {
+        $siteMapFile = $this->createSiteMapFile();
+
+        $baseUrl = '/test/base/url';
+        $siteMapFile->setUrlManager([
+            'class' => UrlManager::className(),
+            'baseUrl' => $baseUrl
+        ]);
+        $urlManager = $siteMapFile->getUrlManager();
+        $this->assertTrue($urlManager instanceof UrlManager, 'Unable to setup URL manager');
+        $this->assertEquals($baseUrl, $urlManager->baseUrl, 'Unable to setup URL manager correctly');
+
+        $siteMapFile = $this->createSiteMapFile();
+        $defaultUrlManager = $siteMapFile->getUrlManager();
+        $this->assertTrue($defaultUrlManager instanceof UrlManager, 'Unable to get default URL manager');
+    }
 
     public function testGetFullFileName()
     {

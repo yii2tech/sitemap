@@ -1,7 +1,7 @@
 Site Map Extension for Yii 2
 ============================
 
-This extension provides.
+This extension provides support for site map and site map index files generating.
 
 For license information check the [LICENSE](LICENSE.md)-file.
 
@@ -33,4 +33,4 @@ to the require section of your composer.json.
 Usage
 -----
 
-This extension
+This extension provides support for site map and site map index files generating.

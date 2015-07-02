@@ -66,6 +66,21 @@ class FileTest extends TestCase
     /**
      * @depends testWriteUrl
      */
+    public function testWriteUrlParams()
+    {
+        $siteMapFile = $this->createSiteMapFile();
+
+        $siteMapFile->writeUrl(['controller/action']);
+
+        $siteMapFile->close();
+
+        $fileContent = file_get_contents($siteMapFile->getFullFileName());
+        $this->assertContains('http://test.com/index.php?r=controller%2Faction', $fileContent);
+    }
+
+    /**
+     * @depends testWriteUrl
+     */
     public function testEntriesCountIncrement()
     {
         $siteMapFile = $this->createSiteMapFile();
