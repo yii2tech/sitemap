@@ -81,6 +81,27 @@ class FileTest extends TestCase
     /**
      * @depends testWriteUrl
      */
+    public function testWriteUrlDefaultOptions()
+    {
+        $siteMapFile = $this->createSiteMapFile();
+        $siteMapFile->defaultOptions = [
+            'lastModified' => '2010-01-01',
+            'changeFrequency' => 'test_frequency',
+            'priority' => '0.1'
+        ];
+
+        $siteMapFile->writeUrl('http://test.url');
+        $siteMapFile->close();
+        $fileContent = file_get_contents($siteMapFile->getFullFileName());
+
+        $this->assertContains($siteMapFile->defaultOptions['lastModified'], $fileContent);
+        $this->assertContains($siteMapFile->defaultOptions['changeFrequency'], $fileContent);
+        $this->assertContains($siteMapFile->defaultOptions['priority'], $fileContent);
+    }
+
+    /**
+     * @depends testWriteUrl
+     */
     public function testEntriesCountIncrement()
     {
         $siteMapFile = $this->createSiteMapFile();

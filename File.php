@@ -44,6 +44,12 @@ class File extends BaseFile
     const CHECK_FREQUENCY_NEVER = 'never';
 
     /**
+     * @var array default options for [[writeUrl()]].
+     */
+    public $defaultOptions = [];
+
+
+    /**
      * @inheritdoc
      */
     protected function afterOpen()
@@ -98,6 +104,7 @@ class File extends BaseFile
                 'changeFrequency' => self::CHECK_FREQUENCY_DAILY,
                 'priority' => '0.5',
             ],
+            $this->defaultOptions,
             $options
         );
         if (ctype_digit($options['lastModified'])) {

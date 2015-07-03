@@ -19,7 +19,8 @@ use yii\web\UrlManager;
  *
  * @see http://www.sitemaps.org/
  *
- * @property integer $entriesCount integer the count of entries written into the file, this property is read-only.
+ * @property integer $entriesCount the count of entries written into the file, this property is read-only.
+ * @property boolean $isEntriesLimitReached whether the max entries limit is already reached or not.
  * @property UrlManager|array|string $urlManager the URL manager object or the application component ID of the URL manager.
  *
  * @author Paul Klimov <klimov.paul@gmail.com>
@@ -92,6 +93,14 @@ abstract class BaseFile extends Object
             $this->_urlManager = Instance::ensure($this->_urlManager, UrlManager::className());
         }
         return $this->_urlManager;
+    }
+
+    /**
+     * @return boolean whether the max entries limit is already reached or not.
+     */
+    public function getIsEntriesLimitReached()
+    {
+        return ($this->_entriesCount >= self::MAX_ENTRIES_COUNT);
     }
 
     /**
