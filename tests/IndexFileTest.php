@@ -110,12 +110,12 @@ class IndexFileTest extends TestCase
         $testFileNames = [];
         $testFileNamePrefix = 'test_file_';
         $testFilesCount = 4;
-        for ($i=1; $i<=$testFilesCount; $i++) {
-            $fileExtension = ($i%2==0) ? 'xml' : 'gzip';
-            $testFileName = $testFileNamePrefix.$i.'.'.$fileExtension;
+        for ($i = 1; $i <= $testFilesCount; $i++) {
+            $fileExtension = ($i % 2 == 0) ? 'xml' : 'gzip';
+            $testFileName = $testFileNamePrefix . $i . '.' . $fileExtension;
             $testFileNames[] = $testFileName;
-            $testFullFileName = $testFilePath.DIRECTORY_SEPARATOR.$testFileName;
-            file_put_contents($testFullFileName, 'test content '.$i);
+            $testFullFileName = $testFilePath . DIRECTORY_SEPARATOR . $testFileName;
+            file_put_contents($testFullFileName, 'test content ' . $i);
         }
 
         $writtenFilesCount = $siteMapIndexFile->writeUpFromPath($testFilePath);
@@ -124,9 +124,38 @@ class IndexFileTest extends TestCase
         $fileContent = file_get_contents($siteMapIndexFile->getFullFileName());
         foreach ($testFileNames as $testFileName) {
             $this->assertContains($testFileName, $fileContent, 'File name not present in the XML!');
-            $fileUrl = $testFileBaseUrl.'/'.$testFileName;
+            $fileUrl = $testFileBaseUrl . '/' . $testFileName;
             $this->assertContains($fileUrl, $fileContent, 'File URL not present in the XML!');
         }
+    }
+
+    /**
+     * @depends testWriteUpFromPath
+     */
+    public function testWriteUpFromPathExcludeIndex()
+    {
+        $siteMapIndexFile = $this->createSiteMapIndexFile();
+
+        $testFileBaseUrl = 'http://test.file/base/path';
+        $siteMapIndexFile->setFileBaseUrl($testFileBaseUrl);
+        $testFilePath = $this->getTestFilePath();
+
+        $testFileNames = [];
+        $testFileNamePrefix = 'test_file_';
+        $testFilesCount = 4;
+        for ($i = 1; $i <= $testFilesCount; $i++) {
+            $fileExtension = ($i % 2 == 0) ? 'xml' : 'gzip';
+            $testFileName = $testFileNamePrefix . $i . '.' . $fileExtension;
+            $testFileNames[] = $testFileName;
+            $testFullFileName = $testFilePath . DIRECTORY_SEPARATOR . $testFileName;
+            file_put_contents($testFullFileName, 'test content ' . $i);
+        }
+
+        file_put_contents($siteMapIndexFile->getFullFileName(), 'test index file');
+
+        $siteMapIndexFile->writeUpFromPath($testFilePath);
+        $fileContent = file_get_contents($siteMapIndexFile->getFullFileName());
+        $this->assertNotContains($siteMapIndexFile->fileName, $fileContent);
     }
 
     /**
@@ -141,12 +170,12 @@ class IndexFileTest extends TestCase
         $testFileNames = [];
         $testFileNamePrefix = 'test_file_';
         $testFilesCount = 4;
-        for ($i=1; $i<=$testFilesCount; $i++) {
+        for ($i = 1; $i <= $testFilesCount; $i++) {
             $fileExtension = ($i % 2 === 0) ? 'xml' : 'gzip';
             $testFileName = $testFileNamePrefix . $i . '.' . $fileExtension;
             $testFileNames[] = $testFileName;
             $testFullFileName = $testFilePath . DIRECTORY_SEPARATOR . $testFileName;
-            file_put_contents($testFullFileName, 'test content '.$i);
+            file_put_contents($testFullFileName, 'test content ' . $i);
         }
 
         $writtenFilesCount = $siteMapIndexFile->writeUpFromPath($testFilePath);

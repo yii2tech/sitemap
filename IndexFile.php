@@ -135,9 +135,6 @@ class IndexFile extends BaseFile
                 '*.xml',
                 '*.gzip'
             ],
-            'exclude' => [
-                basename($this->fileName)
-            ],
         ];
         $files = FileHelper::findFiles($path, $findOptions);
         if (!is_array($files) || empty($files)) {
@@ -145,7 +142,11 @@ class IndexFile extends BaseFile
         }
         $siteMapsCount = 0;
         $fileBaseUrl = rtrim($this->getFileBaseUrl(), '/');
+        $indexFileName = $this->getFullFileName();
         foreach ($files as $file) {
+            if ($file === $indexFileName) {
+                continue;
+            }
             $fileUrl = $fileBaseUrl . '/' . basename($file);
             $lastModifiedDate = date('Y-m-d', filemtime($file));
             $this->writeSiteMap($fileUrl, $lastModifiedDate);
