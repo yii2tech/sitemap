@@ -18,7 +18,9 @@ class BaseFileTest extends TestCase
      */
     protected function createSiteMapFile()
     {
-        $siteMapFileMock = $this->getMock(BaseFile::className(), ['blank']);
+        $siteMapFileMock = $this->getMockBuilder(BaseFile::className())
+            ->setMethods(['blank'])
+            ->getMock();
         return $siteMapFileMock;
     }
 
