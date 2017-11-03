@@ -50,7 +50,7 @@ class File extends BaseFile
 
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     protected function afterOpen()
     {
@@ -59,7 +59,7 @@ class File extends BaseFile
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     protected function beforeClose()
     {
@@ -71,7 +71,7 @@ class File extends BaseFile
      * Writes the URL block into the file.
      * @param string|array $url page URL or params.
      * @param array $options options list, valid options are:
-     * - 'lastModified' - string|integer, last modified date in format Y-m-d or timestamp.
+     * - 'lastModified' - string|int, last modified date in format Y-m-d or timestamp.
      *   by default current date will be used.
      * - 'changeFrequency' - string, page change frequency, the following values can be passed:
      *
@@ -85,7 +85,7 @@ class File extends BaseFile
      *
      *   by default 'daily' will be used. You may use constants defined in this class here.
      * - 'priority' - string|float URL search priority in range 0..1, by default '0.5' will be used
-     * @return integer the number of bytes written.
+     * @return int the number of bytes written.
      */
     public function writeUrl($url, array $options = [])
     {

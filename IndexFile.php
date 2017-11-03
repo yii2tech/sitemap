@@ -81,7 +81,7 @@ class IndexFile extends BaseFile
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     protected function afterOpen()
     {
@@ -90,7 +90,7 @@ class IndexFile extends BaseFile
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     protected function beforeClose()
     {
@@ -101,9 +101,9 @@ class IndexFile extends BaseFile
     /**
      * Writes the site map block into the file.
      * @param string $siteMapFileUrl site map file URL.
-     * @param string|integer|null $lastModifiedDate last modified timestamp or date in format Y-m-d,
+     * @param string|int|null $lastModifiedDate last modified timestamp or date in format Y-m-d,
      * if null given the current date will be used.
-     * @return integer the number of bytes written.
+     * @return int the number of bytes written.
      */
     public function writeSiteMap($siteMapFileUrl, $lastModifiedDate = null)
     {
@@ -124,7 +124,7 @@ class IndexFile extends BaseFile
      * Fills up the index file from the files found in given path.
      * @throws Exception on failure.
      * @param string $path file path, which contains the site map files.
-     * @return integer amount of site maps written.
+     * @return int amount of site maps written.
      */
     public function writeUpFromPath($path)
     {
@@ -158,7 +158,7 @@ class IndexFile extends BaseFile
 
     /**
      * Fills up the index file from the files found in own file path.
-     * @return integer amount of site maps written.
+     * @return int amount of site maps written.
      */
     public function writeUp()
     {

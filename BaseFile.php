@@ -9,7 +9,7 @@ namespace yii2tech\sitemap;
 
 use Yii;
 use yii\base\Exception;
-use yii\base\Object;
+use yii\base\BaseObject;
 use yii\di\Instance;
 use yii\helpers\FileHelper;
 use yii\web\UrlManager;
@@ -19,14 +19,14 @@ use yii\web\UrlManager;
  *
  * @see http://www.sitemaps.org/
  *
- * @property integer $entriesCount the count of entries written into the file, this property is read-only.
- * @property boolean $isEntriesLimitReached whether the max entries limit is already reached or not.
+ * @property int $entriesCount the count of entries written into the file, this property is read-only.
+ * @property bool $isEntriesLimitReached whether the max entries limit is already reached or not.
  * @property UrlManager|array|string $urlManager the URL manager object or the application component ID of the URL manager.
  *
  * @author Paul Klimov <klimov.paul@gmail.com>
  * @since 1.0
  */
-abstract class BaseFile extends Object
+abstract class BaseFile extends BaseObject
 {
     const MAX_ENTRIES_COUNT = 40000; // max XML entries count.
     const MAX_FILE_SIZE = 10485760; // max allowed file size in bytes = 10 MB
@@ -36,7 +36,7 @@ abstract class BaseFile extends Object
      */
     public $fileName = 'sitemap.xml';
     /**
-     * @var integer the chmod permission for directories and files,
+     * @var int the chmod permission for directories and files,
      * created in the process. Defaults to 0777 (owner rwx, group rwx and others rwx).
      */
     public $filePermissions = 0777;
@@ -50,7 +50,7 @@ abstract class BaseFile extends Object
      */
     private $_fileHandler;
     /**
-     * @var integer the count of entries written into the file.
+     * @var int the count of entries written into the file.
      */
     private $_entriesCount = 0;
     /**
@@ -69,7 +69,7 @@ abstract class BaseFile extends Object
     }
 
     /**
-     * @return integer the count of entries written into the file.
+     * @return int the count of entries written into the file.
      */
     public function getEntriesCount()
     {
@@ -96,7 +96,7 @@ abstract class BaseFile extends Object
     }
 
     /**
-     * @return boolean whether the max entries limit is already reached or not.
+     * @return bool whether the max entries limit is already reached or not.
      */
     public function getIsEntriesLimitReached()
     {
@@ -106,7 +106,7 @@ abstract class BaseFile extends Object
     /**
      * Increments the internal entries count.
      * @throws Exception if limit exceeded.
-     * @return integer new entries count value.
+     * @return int new entries count value.
      */
     protected function incrementEntriesCount()
     {
@@ -130,7 +130,7 @@ abstract class BaseFile extends Object
      * Resolves given file path, making sure it exists and writeable.
      * @throws Exception on failure.
      * @param string $path file path.
-     * @return boolean success.
+     * @return bool success.
      */
     protected function resolvePath($path)
     {
@@ -146,7 +146,7 @@ abstract class BaseFile extends Object
     /**
      * Opens the related file for writing.
      * @throws Exception on failure.
-     * @return boolean success.
+     * @return bool success.
      */
     public function open()
     {
@@ -164,7 +164,7 @@ abstract class BaseFile extends Object
     /**
      * Close the related file if it was opened.
      * @throws Exception if file exceed max allowed size.
-     * @return boolean success.
+     * @return bool success.
      */
     public function close()
     {
@@ -185,7 +185,7 @@ abstract class BaseFile extends Object
      * Writes the given content to the file.
      * @throws Exception on failure.
      * @param string $content content to be written.
-     * @return integer the number of bytes written.
+     * @return int the number of bytes written.
      */
     public function write($content)
     {
