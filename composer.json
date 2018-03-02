@@ -17,7 +17,7 @@
         }
     ],
     "require": {
-        "yiisoft/yii2": "~2.0.13"
+        "yiisoft/yii2": "2.1.x-dev"
     },
     "repositories": [
         {
@@ -27,6 +27,9 @@
     ],
     "autoload": {
         "psr-4": {"yii2tech\\sitemap\\": "src"}
+    },
+    "autoload-dev": {
+        "psr-4": {"yii2tech\\tests\\unit\\sitemap\\": "tests"}
     },
     "extra": {
         "branch-alias": {

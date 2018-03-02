@@ -85,12 +85,12 @@ abstract class BaseFile extends BaseObject
     }
 
     /**
-     * @return UrlManager
+     * @return UrlManager URL manager to be used.
      */
     public function getUrlManager()
     {
         if (!is_object($this->_urlManager)) {
-            $this->_urlManager = Instance::ensure($this->_urlManager, UrlManager::className());
+            $this->_urlManager = Instance::ensure($this->_urlManager, UrlManager::class);
         }
         return $this->_urlManager;
     }

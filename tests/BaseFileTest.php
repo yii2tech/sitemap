@@ -18,7 +18,7 @@ class BaseFileTest extends TestCase
      */
     protected function createSiteMapFile()
     {
-        $siteMapFileMock = $this->getMockBuilder(BaseFile::className())
+        $siteMapFileMock = $this->getMockBuilder(BaseFile::class)
             ->setMethods(['blank'])
             ->getMock();
         return $siteMapFileMock;
@@ -32,7 +32,7 @@ class BaseFileTest extends TestCase
 
         $baseUrl = '/test/base/url';
         $siteMapFile->setUrlManager([
-            'class' => UrlManager::className(),
+            '__class' => UrlManager::class,
             'baseUrl' => $baseUrl
         ]);
         $urlManager = $siteMapFile->getUrlManager();
