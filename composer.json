@@ -26,7 +26,7 @@
         }
     ],
     "autoload": {
-        "psr-4": { "yii2tech\\sitemap\\": "" }
+        "psr-4": {"yii2tech\\sitemap\\": "src"}
     },
     "extra": {
         "branch-alias": {
