@@ -54,6 +54,24 @@ $siteMapFile->writeUrl(['site/contact']);
 $siteMapFile->close();
 ```
 
+In case you put sitemap generation into console command, you will need to manually configure URL manager
+parameters for it. For example:
+
+```php
+return [
+    'id' => 'my-console-application',
+    'components' => [
+        'urlManager' => [
+            'hostInfo' => 'http://example.com',
+            'baseUrl' => '/',
+            'scriptUrl' => '/index.php',
+        ],
+        // ...
+    ],
+    // ...
+];
+```
+
 
 ## Creating site map index files <span id="creating-site-map-index-files"></span>
 
