@@ -112,7 +112,7 @@ abstract class BaseFile extends BaseObject
     {
         $this->_entriesCount++;
         if ($this->_entriesCount > self::MAX_ENTRIES_COUNT) {
-            throw new Exception('Entries count exceeds limit of "' . self::MAX_ENTRIES_COUNT . '".');
+            throw new Exception(sprintf('Entries count exceeds limit of "%d" in "%s".', self::MAX_ENTRIES_COUNT, $this->fileName));
         }
         return $this->_entriesCount;
     }
