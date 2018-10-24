@@ -117,4 +117,17 @@ class FileTest extends TestCase
         $this->assertEquals($originalEntriesCount + 1, $postWriteEntriesCount, 'No entries count increment detected!');
         $siteMapFile->close();
     }
+
+    /**
+     * @depends testEntriesCountIncrement
+     */
+    public function testEntiesCountExceedException()
+    {
+        $siteMapFile = $this->createSiteMapFile();
+
+        $this->expectException('yii\base\Exception');
+        for ($i = 1; $i < File::MAX_ENTRIES_COUNT + 2; $i++) {
+            $siteMapFile->writeUrl('http://test.url');
+        }
+    }
 }
