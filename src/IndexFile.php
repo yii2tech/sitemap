@@ -110,12 +110,12 @@ class IndexFile extends BaseFile
         $this->incrementEntriesCount();
         $xmlCode = '<sitemap>';
         $xmlCode .= "<loc>{$siteMapFileUrl}</loc>";
-        if ($lastModifiedDate === null) {
-            $lastModifiedDate = date('Y-m-d');
-        } elseif (ctype_digit($lastModifiedDate)) {
-            $lastModifiedDate = date('Y-m-d', $lastModifiedDate);
+        if ($lastModifiedDate !== null) {
+            if (ctype_digit($lastModifiedDate)) {
+                $lastModifiedDate = date('Y-m-d', $lastModifiedDate);
+            }
+            $xmlCode .= "<lastmod>{$lastModifiedDate}</lastmod>";
         }
-        $xmlCode .= "<lastmod>{$lastModifiedDate}</lastmod>";
         $xmlCode .= '</sitemap>';
         return $this->write($xmlCode);
     }

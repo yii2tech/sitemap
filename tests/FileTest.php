@@ -2,7 +2,6 @@
 
 namespace yii2tech\tests\unit\sitemap;
 
-use Yii;
 use yii2tech\sitemap\File;
 
 /**
@@ -129,5 +128,36 @@ class FileTest extends TestCase
         for ($i = 1; $i < File::MAX_ENTRIES_COUNT + 2; $i++) {
             $siteMapFile->writeUrl('http://test.url');
         }
+    }
+
+    /**
+     * @depends testWriteUrl
+     */
+    public function testWriteUrlWithDefaultOptions()
+    {
+        $siteMapFile = $this->createSiteMapFile();
+
+        $testUrl = 'http://test.url';
+        $siteMapFile->writeUrl($testUrl);
+
+        $siteMapFile->close();
+
+        $fileContent = file_get_contents($siteMapFile->getFullFileName());
+
+        $this->assertContains("<url><loc>{$testUrl}</loc></url>", $fileContent);
+    }
+
+    /**
+     * @depends testWriteUrl
+     */
+    public function testWriteUrlWithInvalidOption()
+    {
+        $siteMapFile = $this->createSiteMapFile();
+
+        $this->expectException('yii\base\InvalidArgumentException');
+
+        $siteMapFile->writeUrl('http://test.url', [
+            'invalidOption' => 'some-value',
+        ]);
     }
 }
