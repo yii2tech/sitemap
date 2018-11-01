@@ -72,7 +72,6 @@ class File extends BaseFile
      * @param string|array $url page URL or params.
      * @param array $options options list, valid options are:
      * - 'lastModified' - string|int, last modified date in format Y-m-d or timestamp.
-     *   by default current date will be used.
      * - 'changeFrequency' - string, page change frequency, the following values can be passed:
      *
      *   * always
@@ -83,8 +82,8 @@ class File extends BaseFile
      *   * yearly
      *   * never
      *
-     *   by default 'daily' will be used. You may use constants defined in this class here.
-     * - 'priority' - string|float URL search priority in range 0..1, by default '0.5' will be used
+     *   You may use constants defined in this class here.
+     * - 'priority' - string|float URL search priority in range 0..1
      * @return int the number of bytes written.
      */
     public function writeUrl($url, array $options = [])
@@ -98,22 +97,14 @@ class File extends BaseFile
         $xmlCode = '<url>';
         $xmlCode .= "<loc>{$url}</loc>";
 
-        $options = array_merge(
-            [
-                'lastModified' => date('Y-m-d'),
-                'changeFrequency' => self::CHECK_FREQUENCY_DAILY,
-                'priority' => '0.5',
-            ],
-            $this->defaultOptions,
-            $options
-        );
+        $options = array_merge($this->defaultOptions, $options);
         if (ctype_digit($options['lastModified'])) {
             $options['lastModified'] = date('Y-m-d', $options['lastModified']);
         }
 
-        $xmlCode .= "<lastmod>{$options['lastModified']}</lastmod>";
-        $xmlCode .= "<changefreq>{$options['changeFrequency']}</changefreq>";
-        $xmlCode .= "<priority>{$options['priority']}</priority>";
+        $xmlCode .= $options['lastModified'] ? "<lastmod>{$options['lastModified']}</lastmod>" : '';
+        $xmlCode .= $options['changeFrequency'] ? "<changefreq>{$options['changeFrequency']}</changefreq>" : '';
+        $xmlCode .= $options['priority'] ? "<priority>{$options['priority']}</priority>" : '';
 
         $xmlCode .= '</url>';
         return $this->write($xmlCode);
