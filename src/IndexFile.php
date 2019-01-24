@@ -7,8 +7,6 @@
 
 namespace yii2tech\sitemap;
 
-use CException;
-use CFileHelper;
 use Yii;
 use yii\base\Exception;
 use yii\helpers\FileHelper;
@@ -108,15 +106,19 @@ class IndexFile extends BaseFile
     public function writeSiteMap($siteMapFileUrl, $lastModifiedDate = null)
     {
         $this->incrementEntriesCount();
+
         $xmlCode = '<sitemap>';
         $xmlCode .= "<loc>{$siteMapFileUrl}</loc>";
+
         if ($lastModifiedDate !== null) {
             if (ctype_digit($lastModifiedDate)) {
                 $lastModifiedDate = date('Y-m-d', $lastModifiedDate);
             }
             $xmlCode .= "<lastmod>{$lastModifiedDate}</lastmod>";
         }
+
         $xmlCode .= '</sitemap>';
+
         return $this->write($xmlCode);
     }
 
@@ -140,6 +142,7 @@ class IndexFile extends BaseFile
         if (!is_array($files) || empty($files)) {
             throw new Exception('Unable to find site map files under the path "' . $path . '"');
         }
+
         $siteMapsCount = 0;
         $fileBaseUrl = rtrim($this->getFileBaseUrl(), '/');
         $indexFileName = $this->getFullFileName();
@@ -152,7 +155,9 @@ class IndexFile extends BaseFile
             $this->writeSiteMap($fileUrl, $lastModifiedDate);
             $siteMapsCount++;
         }
+
         $this->close();
+
         return $siteMapsCount;
     }
 

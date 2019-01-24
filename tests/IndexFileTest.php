@@ -2,7 +2,6 @@
 
 namespace yii2tech\tests\unit\sitemap;
 
-use Yii;
 use yii2tech\sitemap\IndexFile;
 
 /**
