@@ -28,8 +28,8 @@ use yii\web\UrlManager;
  */
 abstract class BaseFile extends BaseObject
 {
-    const MAX_ENTRIES_COUNT = 40000; // max XML entries count.
-    const MAX_FILE_SIZE = 10485760; // max allowed file size in bytes = 10 MB
+    public $maxEntriesCount = 40000; // max XML entries count.
+    public $maxFileSize = 10485760; // max allowed file size in bytes = 10 MB
 
     /**
      * @var string name of the site map file.
@@ -100,7 +100,7 @@ abstract class BaseFile extends BaseObject
      */
     public function getIsEntriesLimitReached()
     {
-        return ($this->_entriesCount >= self::MAX_ENTRIES_COUNT);
+        return ($this->_entriesCount >= $this->maxEntriesCount);
     }
 
     /**
@@ -111,8 +111,8 @@ abstract class BaseFile extends BaseObject
     protected function incrementEntriesCount()
     {
         $this->_entriesCount++;
-        if ($this->_entriesCount > self::MAX_ENTRIES_COUNT) {
-            throw new Exception('Entries count exceeds limit of "' . self::MAX_ENTRIES_COUNT . '" at file "' . $this->getFullFileName() . '".');
+        if ($this->_entriesCount > $this->maxEntriesCount) {
+            throw new Exception('Entries count exceeds limit of "' . $this->maxEntriesCount . '" at file "' . $this->getFullFileName() . '".');
         }
         return $this->_entriesCount;
     }
@@ -174,8 +174,8 @@ abstract class BaseFile extends BaseObject
             $this->_fileHandler = null;
             $this->_entriesCount = 0;
             $fileSize = filesize($this->getFullFileName());
-            if ($fileSize > self::MAX_FILE_SIZE) {
-                throw new Exception('File "'.$this->getFullFileName().'" has exceed the size limit of "'.self::MAX_FILE_SIZE.'": actual file size: "'.$fileSize.'".');
+            if ($fileSize > $this->maxFileSize) {
+                throw new Exception('File "'.$this->getFullFileName().'" has exceed the size limit of "'.$this->maxFileSize.'": actual file size: "'.$fileSize.'".');
             }
         }
         return true;

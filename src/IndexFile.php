@@ -47,6 +47,9 @@ class IndexFile extends BaseFile
      */
     private $_fileBaseUrl = '';
 
+    public $xmlOpenTag = '<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">';
+    public $xmlCloseTag = '</sitemapindex>';
+
 
     /**
      * @param string $fileBaseUrl base URL for the directory, which contains the site map files.
@@ -84,7 +87,7 @@ class IndexFile extends BaseFile
     protected function afterOpen()
     {
         parent::afterOpen();
-        $this->write('<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">');
+        $this->write($this->xmlOpenTag);
     }
 
     /**
@@ -92,7 +95,7 @@ class IndexFile extends BaseFile
      */
     protected function beforeClose()
     {
-        $this->write('</sitemapindex>');
+        $this->write($this->xmlCloseTag);
         parent::beforeClose();
     }
 

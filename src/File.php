@@ -50,6 +50,8 @@ class File extends BaseFile
      */
     public $defaultOptions = [];
 
+    public $xmlOpenTag = '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">';
+    public $xmlCloseTag = '</urlset>';
 
     /**
      * {@inheritdoc}
@@ -57,7 +59,7 @@ class File extends BaseFile
     protected function afterOpen()
     {
         parent::afterOpen();
-        $this->write('<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">');
+        $this->write($this->xmlOpenTag);
     }
 
     /**
@@ -65,7 +67,7 @@ class File extends BaseFile
      */
     protected function beforeClose()
     {
-        $this->write('</urlset>');
+        $this->write($this->xmlCloseTag);
         parent::beforeClose();
     }
 
