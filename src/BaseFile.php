@@ -46,6 +46,10 @@ abstract class BaseFile extends BaseObject
      */
     public $fileBasePath = '@app/web/sitemap';
     /**
+     * @var string line break symbol
+     */
+    public $lineBreak = "\n";
+    /**
      * @var resource file resource handler.
      */
     private $_fileHandler;
@@ -190,7 +194,7 @@ abstract class BaseFile extends BaseObject
     public function write($content)
     {
         $this->open();
-        $bytesWritten = fwrite($this->_fileHandler, $content);
+        $bytesWritten = fwrite($this->_fileHandler, $content . $this->lineBreak);
         if ($bytesWritten === false) {
             throw new Exception('Unable to write file "' . $this->getFullFileName() . '".');
         }
