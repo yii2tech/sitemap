@@ -90,8 +90,9 @@ abstract class BaseFile extends BaseObject
     public function getUrlManager()
     {
         if (!is_object($this->_urlManager)) {
-            $this->_urlManager = Instance::ensure($this->_urlManager, UrlManager::className());
+            $this->_urlManager = Instance::ensure($this->_urlManager, UrlManager::class);
         }
+
         return $this->_urlManager;
     }
 
@@ -114,6 +115,7 @@ abstract class BaseFile extends BaseObject
         if ($this->_entriesCount > self::MAX_ENTRIES_COUNT) {
             throw new Exception('Entries count exceeds limit of "' . self::MAX_ENTRIES_COUNT . '" at file "' . $this->getFullFileName() . '".');
         }
+
         return $this->_entriesCount;
     }
 
@@ -140,6 +142,7 @@ abstract class BaseFile extends BaseObject
         } elseif (!is_writable($path)) {
             throw new Exception("Path: '{$path}' should be writeable!");
         }
+
         return true;
     }
 
@@ -158,6 +161,7 @@ abstract class BaseFile extends BaseObject
             }
             $this->afterOpen();
         }
+
         return true;
     }
 
@@ -178,6 +182,7 @@ abstract class BaseFile extends BaseObject
                 throw new Exception('File "'.$this->getFullFileName().'" has exceed the size limit of "'.self::MAX_FILE_SIZE.'": actual file size: "'.$fileSize.'".');
             }
         }
+
         return true;
     }
 
@@ -194,6 +199,7 @@ abstract class BaseFile extends BaseObject
         if ($bytesWritten === false) {
             throw new Exception('Unable to write file "' . $this->getFullFileName() . '".');
         }
+
         return $bytesWritten;
     }
 

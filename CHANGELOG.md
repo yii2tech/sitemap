@@ -1,6 +1,12 @@
 Yii 2 Site Map extension Change Log
 ===================================
 
+1.1.0 Under Development
+-----------------------
+
+- Enh: Removed `yii\base\Object::className()` in favor of native PHP syntax `::class`, which does not trigger autoloading (klimov-paul)
+
+
 1.0.2, January 24, 2019
 -----------------------
 
