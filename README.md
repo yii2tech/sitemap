@@ -124,3 +124,38 @@ $siteMapIndexFile->writeUp();
 
 > Note: by default site map files are stored under the path '@app/web/sitemap'. If you need a different file path
   you should adjust `fileBasePath` field accordingly.
+
+
+## Customizing file envelope <span id="customizing-file-envelope"></span>
+
+You can customize entries envelope for the particular file using following options:
+
+ - `\yii2tech\sitemap\BaseFile::$header` - content, which should be written at the beginning of the file, once it has been opened;
+ 
+ - `\yii2tech\sitemap\BaseFile::$footer` - content, which should be written at the end of the file before it is closed;
+ 
+ - `\yii2tech\sitemap\BaseFile::$rootTag` - defines XML root tag name and attributes;
+ 
+For example:
+
+```php
+<?php
+
+use yii2tech\sitemap\File;
+
+$siteMapFile = new File([
+    'header' => '<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type="text/xsl" href="//example.com/main-sitemap.xsl"?>',
+    'rootTag' => [
+        'tag' => 'urlset',
+        'xmlns' => 'http://www.sitemaps.org/schemas/sitemap/0.9',
+        'xmlns:xsi' => 'http://www.w3.org/2001/XMLSchema-instance',
+        'xmlns:image' => 'http://www.google.com/schemas/sitemap-image/1.1',
+        'xsi:schemaLocation' => 'http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd http://www.google.com/schemas/sitemap-image/1.1 http://www.google.com/schemas/sitemap-image/1.1/sitemap-image.xsd',
+    ],
+]);
+
+$siteMapFile->writeUrl(['site/index'], ['priority' => '0.9']);
+// ...
+
+$siteMapFile->close();
+```

@@ -5,7 +5,7 @@ Yii 2 Site Map extension Change Log
 -----------------------
 
 - Enh: Removed `yii\base\Object::className()` in favor of native PHP syntax `::class`, which does not trigger autoloading (klimov-paul)
-- Enh #5: Added `header`, `footer` and `rootTag` fields to `BaseFile` allowing customizing of the file entries enclosure (GeniJaho, klimov-paul)
+- Enh #5: Added `header`, `footer` and `rootTag` fields to `BaseFile` allowing customizing of the file entries envelope (GeniJaho, klimov-paul)
 
 
 1.0.2, January 24, 2019

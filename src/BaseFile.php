@@ -61,6 +61,11 @@ abstract class BaseFile extends BaseObject
      */
     public $header = '<?xml version="1.0" encoding="UTF-8"?>';
     /**
+     * @var string content, which should be written at the end of the file before it is closed.
+     * @since 1.1.0
+     */
+    public $footer = '';
+    /**
      * @var array defines XML root tag name and attributes.
      * Name of tag is defined by 'tag' key, any other keys are considered to be tag attributes.
      * For example:
@@ -78,11 +83,7 @@ abstract class BaseFile extends BaseObject
      * @since 1.1.0
      */
     public $rootTag;
-    /**
-     * @var string content, which should be written at the end of the file before it is closed.
-     * @since 1.1.0
-     */
-    public $footer = '';
+
     /**
      * @var resource file resource handler.
      */
