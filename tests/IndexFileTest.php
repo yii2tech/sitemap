@@ -52,6 +52,7 @@ class IndexFileTest extends TestCase
 
         $fileContent = file_get_contents($siteMapIndexFile->getFullFileName());
 
+        $this->assertContains('<?xml', $fileContent);
         $this->assertContains('<sitemapindex', $fileContent);
         $this->assertContains('</sitemapindex>', $fileContent);
     }

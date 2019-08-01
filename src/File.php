@@ -46,28 +46,18 @@ class File extends BaseFile
     const CHECK_FREQUENCY_NEVER = 'never';
 
     /**
+     * {@inheritdoc}
+     */
+    public $rootTag = [
+        'tag' => 'urlset',
+        'xmlns' => 'http://www.sitemaps.org/schemas/sitemap/0.9',
+    ];
+
+    /**
      * @var array default options for {@see writeUrl()}.
      */
     public $defaultOptions = [];
 
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function afterOpen()
-    {
-        parent::afterOpen();
-        $this->write('<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">');
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function beforeClose()
-    {
-        $this->write('</urlset>');
-        parent::beforeClose();
-    }
 
     /**
      * Writes the URL block into the file.

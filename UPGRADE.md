@@ -12,3 +12,6 @@ Upgrade from 1.0.2
 ------------------
 
 * PHP requirements were raised to 5.6. Make sure your code is updated accordingly.
+
+* Constants `MAX_ENTRIES_COUNT` and `MAX_FILE_SIZE` has been removed from `BaseFile` class.
+  Make sure you do not use these constants anywhere in your code.

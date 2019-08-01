@@ -11,7 +11,9 @@ use Yii;
 use yii\base\Exception;
 use yii\base\BaseObject;
 use yii\di\Instance;
+use yii\helpers\ArrayHelper;
 use yii\helpers\FileHelper;
+use yii\helpers\Html;
 use yii\web\UrlManager;
 
 /**
@@ -28,9 +30,17 @@ use yii\web\UrlManager;
  */
 abstract class BaseFile extends BaseObject
 {
-    const MAX_ENTRIES_COUNT = 40000; // max XML entries count.
-    const MAX_FILE_SIZE = 10485760; // max allowed file size in bytes = 10 MB
-
+    /**
+     * @var int max allowed XML entries count.
+     * @since 1.1.0
+     */
+    public $maxEntriesCount = 50000;
+    /**
+     * @var int max allowed files size in bytes.
+     * By default - 50 MB.
+     * @since 1.1.0
+     */
+    public $maxFileSize = 52428800;
     /**
      * @var string name of the site map file.
      */
@@ -45,6 +55,34 @@ abstract class BaseFile extends BaseObject
      * By default '@app/web/sitemap' will be used.
      */
     public $fileBasePath = '@app/web/sitemap';
+    /**
+     * @var string content, which should be written at the beginning of the file, once it has been opened.
+     * @since 1.1.0
+     */
+    public $header = '<?xml version="1.0" encoding="UTF-8"?>';
+    /**
+     * @var array defines XML root tag name and attributes.
+     * Name of tag is defined by 'tag' key, any other keys are considered to be tag attributes.
+     * For example:
+     *
+     * ```
+     * [
+     *     'tag' => 'urlset',
+     *     'xmlns' => 'http://www.sitemaps.org/schemas/sitemap/0.9',
+     * ]
+     * ```
+     *
+     * @see Html::beginTag()
+     * @see Html::endTag()
+     *
+     * @since 1.1.0
+     */
+    public $rootTag;
+    /**
+     * @var string content, which should be written at the end of the file before it is closed.
+     * @since 1.1.0
+     */
+    public $footer = '';
     /**
      * @var resource file resource handler.
      */
@@ -77,7 +115,7 @@ abstract class BaseFile extends BaseObject
     }
 
     /**
-     * @param UrlManager|array|string $urlManager
+     * @param UrlManager|array|string $urlManager URL manager to be used for URL creation.
      */
     public function setUrlManager($urlManager)
     {
@@ -85,7 +123,7 @@ abstract class BaseFile extends BaseObject
     }
 
     /**
-     * @return UrlManager
+     * @return UrlManager URL manager used for URL creation.
      */
     public function getUrlManager()
     {
@@ -101,7 +139,7 @@ abstract class BaseFile extends BaseObject
      */
     public function getIsEntriesLimitReached()
     {
-        return ($this->_entriesCount >= self::MAX_ENTRIES_COUNT);
+        return ($this->_entriesCount >= $this->maxEntriesCount);
     }
 
     /**
@@ -112,8 +150,8 @@ abstract class BaseFile extends BaseObject
     protected function incrementEntriesCount()
     {
         $this->_entriesCount++;
-        if ($this->_entriesCount > self::MAX_ENTRIES_COUNT) {
-            throw new Exception('Entries count exceeds limit of "' . self::MAX_ENTRIES_COUNT . '" at file "' . $this->getFullFileName() . '".');
+        if ($this->_entriesCount > $this->maxEntriesCount) {
+            throw new Exception('Entries count exceeds limit of "' . $this->maxEntriesCount . '" at file "' . $this->getFullFileName() . '".');
         }
 
         return $this->_entriesCount;
@@ -178,8 +216,8 @@ abstract class BaseFile extends BaseObject
             $this->_fileHandler = null;
             $this->_entriesCount = 0;
             $fileSize = filesize($this->getFullFileName());
-            if ($fileSize > self::MAX_FILE_SIZE) {
-                throw new Exception('File "'.$this->getFullFileName().'" has exceed the size limit of "'.self::MAX_FILE_SIZE.'": actual file size: "'.$fileSize.'".');
+            if ($fileSize > $this->maxFileSize) {
+                throw new Exception('File "'.$this->getFullFileName().'" has exceed the size limit of "' . $this->maxFileSize . '": actual file size: "'.$fileSize.'".');
             }
         }
 
@@ -195,6 +233,7 @@ abstract class BaseFile extends BaseObject
     public function write($content)
     {
         $this->open();
+
         $bytesWritten = fwrite($this->_fileHandler, $content);
         if ($bytesWritten === false) {
             throw new Exception('Unable to write file "' . $this->getFullFileName() . '".');
@@ -210,7 +249,13 @@ abstract class BaseFile extends BaseObject
      */
     protected function afterOpen()
     {
-        $this->write('<?xml version="1.0" encoding="UTF-8"?>');
+        $this->write($this->header);
+
+        if (!empty($this->rootTag)) {
+            $tagOptions = $this->rootTag;
+            $tagName = ArrayHelper::remove($tagOptions, 'tag');
+            $this->write(Html::beginTag($tagName, $tagOptions));
+        }
     }
 
     /**
@@ -219,6 +264,11 @@ abstract class BaseFile extends BaseObject
      */
     protected function beforeClose()
     {
-        // blank
+        if (!empty($this->rootTag)) {
+            $tagOptions = $this->rootTag;
+            $this->write(Html::endTag(ArrayHelper::remove($tagOptions, 'tag')));
+        }
+
+        $this->write($this->footer);
     }
 }

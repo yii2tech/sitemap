@@ -31,6 +31,7 @@ class FileTest extends TestCase
 
         $fileContent = file_get_contents($siteMapFile->getFullFileName());
 
+        $this->assertContains('<?xml', $fileContent);
         $this->assertContains('<urlset', $fileContent);
         $this->assertContains('</urlset>', $fileContent);
     }
@@ -124,7 +125,7 @@ class FileTest extends TestCase
         $siteMapFile = $this->createSiteMapFile();
 
         $this->expectException('yii\base\Exception');
-        for ($i = 1; $i < File::MAX_ENTRIES_COUNT + 2; $i++) {
+        for ($i = 1; $i < $siteMapFile->maxEntriesCount + 2; $i++) {
             $siteMapFile->writeUrl('http://test.url');
         }
     }

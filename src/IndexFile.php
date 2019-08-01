@@ -43,6 +43,13 @@ class IndexFile extends BaseFile
      */
     public $fileName = 'sitemap_index.xml';
     /**
+     * {@inheritdoc}
+     */
+    public $rootTag = [
+        'tag' => 'sitemapindex',
+        'xmlns' => 'http://www.sitemaps.org/schemas/sitemap/0.9',
+    ];
+    /**
      * @var string base URL for the directory, which contains the site map files.
      */
     private $_fileBaseUrl = '';
@@ -76,24 +83,6 @@ class IndexFile extends BaseFile
     {
         $urlManager = $this->getUrlManager();
         return $urlManager->getHostInfo() . $urlManager->getBaseUrl() . '/sitemap';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function afterOpen()
-    {
-        parent::afterOpen();
-        $this->write('<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">');
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function beforeClose()
-    {
-        $this->write('</sitemapindex>');
-        parent::beforeClose();
     }
 
     /**
