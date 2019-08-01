@@ -39,9 +39,11 @@ Usage
 -----
 
 This extension provides support for site map and site map index files generation.
-You can use [[\yii2tech\sitemap\File]] for site map file composition:
+You can use `\yii2tech\sitemap\File` for site map file composition:
 
 ```php
+<?php
+
 use yii2tech\sitemap\File;
 
 $siteMapFile = new File();
@@ -58,6 +60,8 @@ In case you put sitemap generation into console command, you will need to manual
 parameters for it. For example:
 
 ```php
+<?php
+
 return [
     'id' => 'my-console-application',
     'components' => [
@@ -78,13 +82,15 @@ return [
 There is a limitation on the site map maximum size. Such file can not contain more then 50000 entries and its
 actual size can not exceed 10MB. If you web application has more then 50000 pages and you need to generate
 site map for it, you'll have to split it between several files and then generate a site map index file.
-It is up to you how you split your URLs between different site map files, however you can use [[\yii2tech\sitemap\File::getEntriesCount()]]
-or [[\yii2tech\sitemap\File::getIsEntriesLimitReached()]] method to check count of already written entries.
+It is up to you how you split your URLs between different site map files, however you can use `\yii2tech\sitemap\File::getEntriesCount()`
+or `\yii2tech\sitemap\File::getIsEntriesLimitReached()` method to check count of already written entries.
 
 For example: assume we have an 'item' table, which holds several millions of records, each of which has a detail
 view page at web application. In this case generating site map files for such pages may look like following:
 
 ```php
+<?php
+
 use yii2tech\sitemap\File;
 use app\models\Item;
 
@@ -105,9 +111,11 @@ foreach ($query->each() as $row) {
 }
 ```
 
-Once all site map files are generated, you can compose index file, using following code:
+Once all site map files are generated, you can compose index file, using the following code:
 
 ```php
+<?php
+
 use yii2tech\sitemap\IndexFile;
 
 $siteMapIndexFile = new IndexFile();
@@ -115,4 +123,4 @@ $siteMapIndexFile->writeUp();
 ```
 
 > Note: by default site map files are stored under the path '@app/web/sitemap'. If you need a different file path
-  you should adjust [[fileBasePath]] field accordingly.
+  you should adjust `fileBasePath` field accordingly.

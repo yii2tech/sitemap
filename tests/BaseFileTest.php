@@ -6,7 +6,6 @@ use yii\web\UrlManager;
 use yii2tech\sitemap\BaseFile;
 
 /**
- * Test case for the extension [[BaseFile]].
  * @see BaseFile
  */
 class BaseFileTest extends TestCase
@@ -20,6 +19,7 @@ class BaseFileTest extends TestCase
         $siteMapFileMock = $this->getMockBuilder(BaseFile::className())
             ->setMethods(['blank'])
             ->getMock();
+
         return $siteMapFileMock;
     }
 

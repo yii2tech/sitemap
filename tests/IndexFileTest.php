@@ -5,7 +5,6 @@ namespace yii2tech\tests\unit\sitemap;
 use yii2tech\sitemap\IndexFile;
 
 /**
- * Test case for the extension [[IndexFile]].
  * @see IndexFile
  */
 class IndexFileTest extends TestCase
@@ -18,6 +17,7 @@ class IndexFileTest extends TestCase
     {
         $siteMapFile = new IndexFile();
         $siteMapFile->fileBasePath = $this->getTestFilePath();
+
         return $siteMapFile;
     }
 

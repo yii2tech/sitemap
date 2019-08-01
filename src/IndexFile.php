@@ -24,7 +24,7 @@ use yii\helpers\FileHelper;
  * $siteMapIndexFile->writeUpFromPath('@app/web/sitemap');
  * ```
  *
- * If source site map files and an index file are in the same directory, you may use [[writeUp()]].
+ * If source site map files and an index file are in the same directory, you may use {@see writeUp()}.
  *
  * @see BaseFile
  * @see File
@@ -69,7 +69,7 @@ class IndexFile extends BaseFile
     }
 
     /**
-     * Initializes the [[fileBaseUrl]] value.
+     * Initializes the {@see fileBaseUrl} value.
      * @return string default file base URL.
      */
     protected function defaultFileBaseUrl()

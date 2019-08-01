@@ -5,7 +5,6 @@ namespace yii2tech\tests\unit\sitemap;
 use yii2tech\sitemap\File;
 
 /**
- * Test case for the extension [[File]].
  * @see File
  */
 class FileTest extends TestCase

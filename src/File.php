@@ -46,7 +46,7 @@ class File extends BaseFile
     const CHECK_FREQUENCY_NEVER = 'never';
 
     /**
-     * @var array default options for [[writeUrl()]].
+     * @var array default options for {@see writeUrl()}.
      */
     public $defaultOptions = [];
 
