@@ -178,7 +178,7 @@ class FileTest extends TestCase
         $siteMapFile->write('');
         $siteMapFile->close();
 
-        $fileContent = file_get_contents($siteMapFile->getFullFileName());
+        $fileContent = str_replace($siteMapFile->lineBreak, '', file_get_contents($siteMapFile->getFullFileName()));
 
         $expectedContent = '<!-- header --><myurlset xmlns="http://example.com"></myurlset><!-- footer -->';
 

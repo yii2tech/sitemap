@@ -10,6 +10,7 @@ Yii 2 Site Map extension Change Log
 - Enh: Extracted special `LimitReachedException` exception class (klimov-paul)
 - Enh: Added ability to use PHP stream as `BaseFile::$fileName` (klimov-paul)
 - Enh #5: Added `header`, `footer` and `rootTag` fields to `BaseFile` allowing customizing of the file entries envelope (GeniJaho, klimov-paul)
+- Enh #6: Added `BaseFile::$lineBreak` allowing setup of the lines separator (easelify)
 
 
 1.0.2, January 24, 2019

@@ -83,6 +83,12 @@ abstract class BaseFile extends BaseObject
      * @since 1.1.0
      */
     public $rootTag;
+    /**
+     * @var string line break symbol.
+     * It will be automatically added at each {@see write()} method invocation.
+     * @since 1.1.0
+     */
+    public $lineBreak = "\n";
 
     /**
      * @var resource file resource handler.
@@ -239,7 +245,7 @@ abstract class BaseFile extends BaseObject
     {
         $this->open();
 
-        $bytesWritten = fwrite($this->_fileHandler, $content);
+        $bytesWritten = fwrite($this->_fileHandler, $content . $this->lineBreak);
         if ($bytesWritten === false) {
             throw new Exception('Unable to write file "' . $this->getFullFileName() . '".');
         }

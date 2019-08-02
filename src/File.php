@@ -127,13 +127,13 @@ class File extends BaseFile
 
         if (!empty($options['images'])) {
             foreach ($options['images'] as $image) {
-                $xmlCode .= $this->composeImage($image);
+                $xmlCode .= $this->lineBreak . $this->composeImage($image);
             }
         }
 
         if (!empty($options['videos'])) {
             foreach ($options['videos'] as $video) {
-                $xmlCode .= $this->composeVideo($video);
+                $xmlCode .= $this->lineBreak . $this->composeVideo($video);
             }
         }
 
@@ -237,40 +237,40 @@ class File extends BaseFile
         $xmlCode = '<video:video>';
 
         if (isset($video['thumbnailUrl'])) {
-            $xmlCode .= '<video:thumbnail_loc>' . $video['thumbnailUrl'] . '</video:thumbnail_loc>'."\n";
+            $xmlCode .= '<video:thumbnail_loc>' . $video['thumbnailUrl'] . '</video:thumbnail_loc>';
         }
         if (isset($video['title'])) {
-            $xmlCode .= '<video:title><![CDATA[' . $video['title'] . ']]></video:title>'."\n";
+            $xmlCode .= '<video:title><![CDATA[' . $video['title'] . ']]></video:title>';
         }
         if (isset($video['description'])) {
-            $xmlCode .= '<video:description><![CDATA[' . $video['description'] . ']]></video:description>'."\n";
+            $xmlCode .= '<video:description><![CDATA[' . $video['description'] . ']]></video:description>';
         }
         if (isset($video['contentUrl'])) {
-            $xmlCode .= '<video:content_loc>' . $video['contentUrl'] . '</video:content_loc>'."\n";
+            $xmlCode .= '<video:content_loc>' . $video['contentUrl'] . '</video:content_loc>';
         }
         if (isset($video['duration'])) {
-            $xmlCode .= '<video:duration>' . $video['duration'] . '</video:duration>'."\n";
+            $xmlCode .= '<video:duration>' . $video['duration'] . '</video:duration>';
         }
         if (isset($video['expirationDate'])) {
-            $xmlCode .= '<video:expiration_date>' . $this->normalizeDateValue($video['expirationDate']) . '</video:expiration_date>'."\n";
+            $xmlCode .= '<video:expiration_date>' . $this->normalizeDateValue($video['expirationDate']) . '</video:expiration_date>';
         }
         if (isset($video['rating'])) {
-            $xmlCode .= '<video:rating>' . $video['rating'] . '</video:rating>'."\n";
+            $xmlCode .= '<video:rating>' . $video['rating'] . '</video:rating>';
         }
         if (isset($video['viewCount'])) {
-            $xmlCode .= '<video:view_count>' . $video['viewCount'] . '</video:view_count>'."\n";
+            $xmlCode .= '<video:view_count>' . $video['viewCount'] . '</video:view_count>';
         }
         if (isset($video['publicationDate'])) {
-            $xmlCode .= '<video:publication_date>' . $this->normalizeDateValue($video['publicationDate']) . '</video:publication_date>'."\n";
+            $xmlCode .= '<video:publication_date>' . $this->normalizeDateValue($video['publicationDate']) . '</video:publication_date>';
         }
         if (isset($video['familyFriendly'])) {
-            $xmlCode .= '<video:family_friendly>' . $video['familyFriendly'] . '</video:family_friendly>'."\n";
+            $xmlCode .= '<video:family_friendly>' . $video['familyFriendly'] . '</video:family_friendly>';
         }
         if (isset($video['requiresSubscription'])) {
-            $xmlCode .= '<video:requires_subscription>' . $video['requiresSubscription'] . '</video:requires_subscription>'."\n";
+            $xmlCode .= '<video:requires_subscription>' . $video['requiresSubscription'] . '</video:requires_subscription>';
         }
         if (isset($video['live'])) {
-            $xmlCode .= '<video:live>' . $video['live'] . '</video:live>'."\n";
+            $xmlCode .= '<video:live>' . $video['live'] . '</video:live>';
         }
         if (isset($video['player'])) {
             $xmlCode .= '<video:player_loc allow_embed="' . $this->normalizeBooleanValue($video['player']['allowEmbed']) . '" autoplay="' . $this->normalizeBooleanValue($video['player']['autoplay']) . '">'
@@ -278,7 +278,7 @@ class File extends BaseFile
                 . '</video:player_loc>';
         }
         if (isset($video['restriction'])) {
-            $xmlCode .= '<video:restriction relationship="' . $video['restriction']['relationship'] . '">' . $video['restriction']['restriction'] . '</video:restriction>'."\n";
+            $xmlCode .= '<video:restriction relationship="' . $video['restriction']['relationship'] . '">' . $video['restriction']['restriction'] . '</video:restriction>';
         }
         if (isset($video['gallery'])) {
             $xmlCode .= '<video:gallery_loc title="' . $video['gallery']['title'] . '">' . $video['gallery']['url'] . '</video:gallery_loc>';
