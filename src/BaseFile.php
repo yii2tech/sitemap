@@ -185,6 +185,10 @@ abstract class BaseFile extends BaseObject
      */
     protected function resolvePath($path)
     {
+        if (stripos($this->fileName, '://') !== false) {
+            return true;
+        }
+
         FileHelper::createDirectory($path, $this->filePermissions);
         if (!is_dir($path)) {
             throw new Exception("Unable to resolve path: '{$path}'!");

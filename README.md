@@ -128,10 +128,10 @@ $siteMapIndexFile->writeUp();
 
 ## Rendering on-the-fly <span id="rendering-on-the-fly"></span>
 
-Saving sitemap to the physical file may be not a best option to keep it up-to-date. Such file should be manually re-created
-once some changes among site pages appear. You may setup a web controller, which will render 'sitemap.xml' file on demand
+Saving sitemap to the physical file may be not a best option to keep it up-to-date. Such file should be manually re-created,
+once some changes among site pages appear. You may setup a web controller, which will render 'sitemap.xml' file on demand,
 once it is been requested. This controller may apply caching and its busting logic.
-First of all you'll have to set up a route for the controller action rendering the sitemap in your URL manager. For example:
+First of all, you'll have to set up a route for the controller action rendering the sitemap in your URL manager. For example:
 
 ```php
 <?php
@@ -171,6 +171,7 @@ class SiteController extends Controller
         // get content from cache:
         $content = Yii::$app->cache->get('sitemap.xml');
         if ($content === false) {
+            // if no cached value exists - create an new one
             // create sitemap file in memory:
             $sitemap = new File();
             $sitemap->fileName = 'php://memory';
@@ -235,7 +236,7 @@ $siteMapFile->close();
 
 ## Rendering non-standard tags <span id="rendering-non-standard-tags"></span>
 
-While there is a [standard](http://www.sitemaps.org/), which defines sitemap content particular search engines may accept
+While there is a [standard](http://www.sitemaps.org/), which defines sitemap content, particular search engines may accept
 extra tags and options. The most widely used are image and video descriptions.
 Method `\yii2tech\sitemap\File::writeUrl()` supports rendering image and video information.
 
