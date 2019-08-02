@@ -1,8 +1,8 @@
 Yii 2 Site Map extension Change Log
 ===================================
 
-1.1.0 Under Development
------------------------
+1.1.0, August 2, 2019
+---------------------
 
 - Enh: Removed `yii\base\Object::className()` in favor of native PHP syntax `::class`, which does not trigger autoloading (klimov-paul)
 - Enh: Added support for 'images' and 'videos' options to `File::writeUrl()` (klimov-paul)
