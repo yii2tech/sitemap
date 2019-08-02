@@ -80,7 +80,7 @@ return [
 ## Creating site map index files <span id="creating-site-map-index-files"></span>
 
 There is a limitation on the site map maximum size. Such file can not contain more then 50000 entries and its
-actual size can not exceed 10MB. If you web application has more then 50000 pages and you need to generate
+actual size can not exceed 50MB. If you web application has more then 50000 pages and you need to generate
 site map for it, you'll have to split it between several files and then generate a site map index file.
 It is up to you how you split your URLs between different site map files, however you can use `\yii2tech\sitemap\File::getEntriesCount()`
 or `\yii2tech\sitemap\File::getIsEntriesLimitReached()` method to check count of already written entries.

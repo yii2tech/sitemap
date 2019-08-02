@@ -272,4 +272,34 @@ abstract class BaseFile extends BaseObject
 
         $this->write($this->footer);
     }
+
+    /**
+     * Normalizes date value for the sitemap XML format.
+     * @param mixed $value raw value.
+     * @return string normalized value.
+     * @since 1.1.0
+     */
+    protected function normalizeDateValue($value)
+    {
+        if (ctype_digit($value)) {
+            return date('Y-m-d', $value);
+        }
+
+        return $value;
+    }
+
+    /**
+     * Normalizes boolean value for the sitemap XML format.
+     * @param mixed $value raw value.
+     * @return string normalized value.
+     * @since 1.1.0
+     */
+    protected function normalizeBooleanValue($value)
+    {
+        if (is_string($value)) {
+            return $value;
+        }
+
+        return $value ? 'yes' : 'no';
+    }
 }

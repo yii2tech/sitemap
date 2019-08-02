@@ -160,4 +160,107 @@ class FileTest extends TestCase
             'invalidOption' => 'some-value',
         ]);
     }
+
+    /**
+     * @depends testWriteBasicXml
+     */
+    public function testCustomizeEnvelope()
+    {
+        $siteMapFile = $this->createSiteMapFile();
+        $siteMapFile->header = '<!-- header -->';
+        $siteMapFile->footer = '<!-- footer -->';
+        $siteMapFile->rootTag = [
+            'tag' => 'myurlset',
+            'xmlns' => 'http://example.com',
+        ];
+
+        $siteMapFile->write('');
+        $siteMapFile->close();
+
+        $fileContent = file_get_contents($siteMapFile->getFullFileName());
+
+        $expectedContent = '<!-- header --><myurlset xmlns="http://example.com"></myurlset><!-- footer -->';
+
+        $this->assertSame($expectedContent, $fileContent);
+    }
+
+    /**
+     * @depends testWriteUrl
+     */
+    public function testWriteImages()
+    {
+        $siteMapFile = $this->createSiteMapFile();
+
+        $siteMapFile->writeUrl('http://example.com/some', [
+            'images' => [
+                [
+                    'url' => 'http://example.com/images/1.jpg',
+                    'title' => 'test title',
+                    'caption' => 'test caption',
+                    'geoLocation' => 'test location',
+                    'license' => 'test license',
+                ],
+                [
+                    'url' => 'http://example.com/images/2.jpg',
+                ],
+            ],
+        ]);
+
+        $siteMapFile->close();
+
+        $fileContent = file_get_contents($siteMapFile->getFullFileName());
+
+        $this->assertContains('<image:image>', $fileContent);
+        $this->assertContains('</image:image>', $fileContent);
+
+        $this->assertContains('<image:loc>http://example.com/images/1.jpg</image:loc>', $fileContent);
+        $this->assertContains('<image:loc>http://example.com/images/2.jpg</image:loc>', $fileContent);
+
+        $this->assertContains('<image:title>test title</image:title>', $fileContent);
+        $this->assertContains('<image:caption>test caption</image:caption>', $fileContent);
+        $this->assertContains('<image:geo_location>test location</image:geo_location>', $fileContent);
+        $this->assertContains('<image:license>test license</image:license>', $fileContent);
+    }
+
+    /**
+     * @depends testWriteUrl
+     */
+    public function testWriteVideos()
+    {
+        $siteMapFile = $this->createSiteMapFile();
+
+        $siteMapFile->writeUrl('http://example.com/some', [
+            'videos' => [
+                [
+                    'title' => 'test title',
+                    'description' => 'test description',
+                    'thumbnailUrl' => 'http://example.com/images/thumbnail.jpg',
+                    'player' => [
+                        'url' => 'http://example.com/videos/1.flv',
+                        'allowEmbed' => true,
+                        'autoplay' => 'ap=1',
+                    ],
+                    'publicationDate' => '2019-08-02',
+                    'duration' => 120,
+                ],
+                [
+                    'player' => [
+                        'url' => 'http://example.com/videos/2.flv',
+                        'allowEmbed' => true,
+                        'autoplay' => 'ap=1',
+                    ],
+                ],
+            ],
+        ]);
+
+        $siteMapFile->close();
+
+        $fileContent = file_get_contents($siteMapFile->getFullFileName());
+
+        $this->assertContains('<video:video>', $fileContent);
+        $this->assertContains('</video:video>', $fileContent);
+
+        $this->assertContains('<video:player_loc allow_embed="yes" autoplay="ap=1">http://example.com/videos/1.flv</video:player_loc>', $fileContent);
+        $this->assertContains('<video:player_loc allow_embed="yes" autoplay="ap=1">http://example.com/videos/2.flv</video:player_loc>', $fileContent);
+    }
 }

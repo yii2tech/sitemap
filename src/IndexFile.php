@@ -46,7 +46,6 @@ class IndexFile extends BaseFile
      * {@inheritdoc}
      */
     public $rootTag = [
-        'tag' => 'sitemapindex',
         'xmlns' => 'http://www.sitemaps.org/schemas/sitemap/0.9',
     ];
     /**
@@ -54,6 +53,18 @@ class IndexFile extends BaseFile
      */
     private $_fileBaseUrl = '';
 
+
+    /**
+     * {@inheritdoc}
+     */
+    public function init()
+    {
+        parent::init();
+
+        if (!empty($this->rootTag) && !isset($this->rootTag['tag'])) {
+            $this->rootTag['tag'] = 'sitemapindex';
+        }
+    }
 
     /**
      * @param string $fileBaseUrl base URL for the directory, which contains the site map files.
@@ -100,10 +111,7 @@ class IndexFile extends BaseFile
         $xmlCode .= "<loc>{$siteMapFileUrl}</loc>";
 
         if ($lastModifiedDate !== null) {
-            if (ctype_digit($lastModifiedDate)) {
-                $lastModifiedDate = date('Y-m-d', $lastModifiedDate);
-            }
-            $xmlCode .= "<lastmod>{$lastModifiedDate}</lastmod>";
+            $xmlCode .= '<lastmod>' . $this->normalizeDateValue($lastModifiedDate) . '</lastmod>';
         }
 
         $xmlCode .= '</sitemap>';
