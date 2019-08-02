@@ -15,3 +15,6 @@ Upgrade from 1.0.2
 
 * Constants `MAX_ENTRIES_COUNT` and `MAX_FILE_SIZE` has been removed from `BaseFile` class.
   Make sure you do not use these constants anywhere in your code.
+
+* The signature of `\yii2tech\sitemap\File::writeUrl()` was changed. The method has got an extra optional parameter `$extraContent`.
+  If you extend this method, make sure to adjust your code.

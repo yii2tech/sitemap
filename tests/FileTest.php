@@ -264,4 +264,24 @@ class FileTest extends TestCase
         $this->assertContains('<video:player_loc allow_embed="yes" autoplay="ap=1">http://example.com/videos/1.flv</video:player_loc>', $fileContent);
         $this->assertContains('<video:player_loc allow_embed="yes" autoplay="ap=1">http://example.com/videos/2.flv</video:player_loc>', $fileContent);
     }
+
+    /**
+     * @depends testWriteUrl
+     */
+    public function testWriteExtraContent()
+    {
+        $siteMapFile = $this->createSiteMapFile();
+
+        $siteMapFile->writeUrl(
+            'http://example.com/some',
+            [],
+            '<!-- extra-content -->'
+        );
+
+        $siteMapFile->close();
+
+        $fileContent = file_get_contents($siteMapFile->getFullFileName());
+
+        $this->assertContains('<!-- extra-content --></url>', $fileContent);
+    }
 }

@@ -159,3 +159,118 @@ $siteMapFile->writeUrl(['site/index'], ['priority' => '0.9']);
 
 $siteMapFile->close();
 ```
+
+
+## Rendering non-standard tags <span id="rendering-non-standard-tags"></span>
+
+While there is a [standard](http://www.sitemaps.org/), which defines sitemap content particular search engines may accept
+extra tags and options. The most widely used are image and video descriptions.
+Method `\yii2tech\sitemap\File::writeUrl()` supports rendering image and video information.
+
+For adding images to the sitemap entry use 'images' option. For example:
+
+```php
+<?php
+
+use yii2tech\sitemap\File;
+
+$siteMapFile = new File([
+    'rootTag' => [
+        'xmlns' => 'http://www.sitemaps.org/schemas/sitemap/0.9',
+        'xmlns:image' => 'http://www.google.com/schemas/sitemap-image/1.1', // you will need to add XML namespace for non-standard tags
+    ],
+]);
+
+$siteMapFile->writeUrl(['site/index'], [
+    'images' => [
+        [
+            'url' => 'http://example.com/images/logo.jpg',
+            'title' => 'Logo',
+        ],
+        [
+            'url' => 'http://example.com/images/avatars/john-doe.jpg',
+            'title' => 'Author',
+        ],
+        // ...
+    ],
+]);
+// ...
+
+$siteMapFile->close();
+```
+
+For adding videos to the sitemap entry use 'videos' option. For example:
+
+```php
+<?php
+
+use yii2tech\sitemap\File;
+
+$siteMapFile = new File([
+    'rootTag' => [
+        'xmlns' => 'http://www.sitemaps.org/schemas/sitemap/0.9',
+        'xmlns:video' => 'http://www.google.com/schemas/sitemap-video/1.1', // you will need to add XML namespace for non-standard tags
+    ],
+]);
+
+$siteMapFile->writeUrl(['site/index'], [
+    'videos' => [
+        [
+            'title' => 'Demo video',
+            'description' => 'Demo video of the main process',
+            'thumbnailUrl' => 'http://example.com/images/demo-video.jpg',
+            'player' => [
+                'url' => 'http://example.com/videos/demo.flv',
+                'allowEmbed' => true,
+                'autoplay' => 'ap=1',
+            ],
+            'publicationDate' => '2019-08-02',
+            'duration' => 240,
+        ],
+        [
+            'title' => 'Our team',
+            'description' => 'Greetings from our team',
+            'thumbnailUrl' => 'http://example.com/images/our-team.jpg',
+            'player' => [
+                'url' => 'http://example.com/videos/our-team.flv',
+                'allowEmbed' => true,
+                'autoplay' => 'ap=1',
+            ],
+            'publicationDate' => '2019-08-02',
+            'duration' => 120,
+        ],
+        // ...
+    ],
+]);
+// ...
+
+$siteMapFile->close();
+```
+
+You can also add any custom content to the URL tag using 3rd argument of the `\yii2tech\sitemap\File::writeUrl()` method.
+For example:
+
+```php
+<?php
+
+use yii2tech\sitemap\File;
+
+$siteMapFile = new File([
+    'rootTag' => [
+        'xmlns' => 'http://www.sitemaps.org/schemas/sitemap/0.9',
+        'xmlns:image' => 'http://www.google.com/schemas/sitemap-image/1.1', // you will need to add XML namespace for non-standard tags
+    ],
+]);
+
+$siteMapFile->writeUrl(
+    ['site/index'],
+    [],
+    '<image:image><image:loc>http://example.com/images/logo.jpg</image:loc></image:image>'
+);
+// ...
+
+$siteMapFile->close();
+```
+
+**Heads up!** Remember that you'll have to add corresponding XML namespaces to the sitemap file, using `\yii2tech\sitemap\BaseFile::$rootTag`,
+in order to non-standard tags being recognized by the search engines.

@@ -91,9 +91,10 @@ class File extends BaseFile
      * - 'images' - array list of images bound to the URL, {@see composeImage()} for details.
      * - 'videos' - array list of videos bound to the URL, {@see composeVideo()} for details.
      *
+     * @param string|null $extraContent extra XML content to be placed inside 'url' tag.
      * @return int the number of bytes written.
      */
-    public function writeUrl($url, array $options = [])
+    public function writeUrl($url, array $options = [], $extraContent = null)
     {
         $this->incrementEntriesCount();
 
@@ -136,6 +137,10 @@ class File extends BaseFile
             }
         }
 
+        if ($extraContent !== null) {
+            $xmlCode .= $extraContent;
+        }
+
         $xmlCode .= '</url>';
 
         return $this->write($xmlCode);
@@ -143,6 +148,8 @@ class File extends BaseFile
 
     /**
      * Creates XML code for image tag.
+     * @see https://www.google.com/schemas/sitemap-image/1.1/
+     *
      * @param array $image image options, valid options are:
      *
      * - 'url' - string
@@ -180,6 +187,8 @@ class File extends BaseFile
 
     /**
      * Creates XML code for video tag.
+     * @see https://www.google.com/schemas/sitemap-video/1.1/
+     *
      * @param array $video video options, valid options are:
      *
      * - 'thumbnailUrl' - string, URL to the thumbnail
