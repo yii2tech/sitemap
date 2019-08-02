@@ -284,4 +284,21 @@ class FileTest extends TestCase
 
         $this->assertContains('<!-- extra-content --></url>', $fileContent);
     }
+
+    /**
+     * @depends testWriteUrl
+     */
+    public function testWriteInMemory()
+    {
+        $siteMapFile = $this->createSiteMapFile();
+
+        $siteMapFile->fileName = 'php://memory';
+
+        $siteMapFile->writeUrl('http://example.com/foo');
+
+        $fileContent = $siteMapFile->getContent();
+
+        $this->assertContains('<?xml', $fileContent);
+        $this->assertContains('http://example.com/foo', $fileContent);
+    }
 }

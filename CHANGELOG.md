@@ -8,6 +8,7 @@ Yii 2 Site Map extension Change Log
 - Enh: Added support for 'images' and 'videos' options to `File::writeUrl()` (klimov-paul)
 - Enh: Added ability to pass extra XML content to `File::writeUrl()` (klimov-paul)
 - Enh: Extracted special `LimitReachedException` exception class (klimov-paul)
+- Enh: Added ability to use PHP stream as `BaseFile::$fileName` (klimov-paul)
 - Enh #5: Added `header`, `footer` and `rootTag` fields to `BaseFile` allowing customizing of the file entries envelope (GeniJaho, klimov-paul)
 
 

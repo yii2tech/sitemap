@@ -164,7 +164,11 @@ abstract class BaseFile extends BaseObject
      */
     public function getFullFileName()
     {
-        return Yii::getAlias($this->fileBasePath) . DIRECTORY_SEPARATOR . $this->fileName;
+        if (stripos($this->fileName, '://') === false) {
+            return Yii::getAlias($this->fileBasePath) . DIRECTORY_SEPARATOR . $this->fileName;
+        }
+
+        return $this->fileName;
     }
 
     /**
@@ -216,7 +220,7 @@ abstract class BaseFile extends BaseObject
             fclose($this->_fileHandler);
             $this->_fileHandler = null;
             $this->_entriesCount = 0;
-            $fileSize = filesize($this->getFullFileName());
+            $fileSize = @filesize($this->getFullFileName());
             if ($fileSize > $this->maxFileSize) {
                 throw new LimitReachedException('File "'.$this->getFullFileName().'" has exceed the size limit of "' . $this->maxFileSize . '": actual file size: "'.$fileSize.'".');
             }
@@ -301,5 +305,25 @@ abstract class BaseFile extends BaseObject
         }
 
         return $value ? 'yes' : 'no';
+    }
+
+    /**
+     * Returns content of this file.
+     * @return string this file content.
+     * @since 1.1.0
+     */
+    public function getContent()
+    {
+        if ($this->_fileHandler === null) {
+            return file_get_contents($this->getFullFileName());
+        }
+
+        fseek($this->_fileHandler, 0);
+
+        $content = stream_get_contents($this->_fileHandler);
+
+        fseek($this->_fileHandler, 0, SEEK_END);
+
+        return $content;
     }
 }

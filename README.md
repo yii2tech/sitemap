@@ -126,6 +126,78 @@ $siteMapIndexFile->writeUp();
   you should adjust `fileBasePath` field accordingly.
 
 
+## Rendering on-the-fly <span id="rendering-on-the-fly"></span>
+
+Saving sitemap to the physical file may be not a best option to keep it up-to-date. Such file should be manually re-created
+once some changes among site pages appear. You may setup a web controller, which will render 'sitemap.xml' file on demand
+once it is been requested. This controller may apply caching and its busting logic.
+First of all you'll have to set up a route for the controller action rendering the sitemap in your URL manager. For example:
+
+```php
+<?php
+
+return [
+    'components' => [
+        'urlManager' => [
+            'rules' => [
+                'sitemap.xml' => 'site/sitemap',
+                // ...
+            ],
+        ],
+        // ...
+    ],
+    // ...
+];
+```
+
+Then you'll need to create an action, which will render sitemap file content and emit it to the web client.
+You can use PHP 'in memory' stream as a file name for the sitemap file during its composition.
+The final implementation may look like following:
+
+```php
+<?php
+
+namespace app\controllers;
+
+use Yii;
+use yii\web\Controller;
+use yii\web\Response;
+use yii2tech\sitemap\File;
+
+class SiteController extends Controller
+{
+    public function actionSitemap()
+    {
+        // get content from cache:
+        $content = Yii::$app->cache->get('sitemap.xml');
+        if ($content === false) {
+            // create sitemap file in memory:
+            $sitemap = new File();
+            $sitemap->fileName = 'php://memory';
+            
+            // write your site URLs:
+            $sitemap->writeUrl(['site/index'], ['priority' => '0.9']);
+            // ...
+            
+            // get generated content:
+            $content = $sitemap->getContent();
+
+            // save generated content to cache
+            Yii::$app->cache->set('sitemap.xml', $content);
+        }
+
+        // send sitemap content to the user agent:
+        $response = Yii::$app->getResponse();
+        $response->format = Response::FORMAT_RAW;
+        $response->getHeaders()->add('Content-Type', 'application/xml;');
+        $response->content = $content;
+        
+        return $response;
+    }
+}
+```
+
+
 ## Customizing file envelope <span id="customizing-file-envelope"></span>
 
 You can customize entries envelope for the particular file using following options:
