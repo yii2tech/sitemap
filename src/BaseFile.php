@@ -145,14 +145,14 @@ abstract class BaseFile extends BaseObject
 
     /**
      * Increments the internal entries count.
-     * @throws Exception if limit exceeded.
+     * @throws LimitReachedException if limit exceeded.
      * @return int new entries count value.
      */
     protected function incrementEntriesCount()
     {
         $this->_entriesCount++;
         if ($this->_entriesCount > $this->maxEntriesCount) {
-            throw new Exception('Entries count exceeds limit of "' . $this->maxEntriesCount . '" at file "' . $this->getFullFileName() . '".');
+            throw new LimitReachedException('Entries count exceeds limit of "' . $this->maxEntriesCount . '" at file "' . $this->getFullFileName() . '".');
         }
 
         return $this->_entriesCount;
@@ -218,7 +218,7 @@ abstract class BaseFile extends BaseObject
             $this->_entriesCount = 0;
             $fileSize = filesize($this->getFullFileName());
             if ($fileSize > $this->maxFileSize) {
-                throw new Exception('File "'.$this->getFullFileName().'" has exceed the size limit of "' . $this->maxFileSize . '": actual file size: "'.$fileSize.'".');
+                throw new LimitReachedException('File "'.$this->getFullFileName().'" has exceed the size limit of "' . $this->maxFileSize . '": actual file size: "'.$fileSize.'".');
             }
         }
 

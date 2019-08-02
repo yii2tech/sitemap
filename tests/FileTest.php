@@ -3,6 +3,7 @@
 namespace yii2tech\tests\unit\sitemap;
 
 use yii2tech\sitemap\File;
+use yii2tech\sitemap\LimitReachedException;
 
 /**
  * @see File
@@ -124,7 +125,7 @@ class FileTest extends TestCase
     {
         $siteMapFile = $this->createSiteMapFile();
 
-        $this->expectException('yii\base\Exception');
+        $this->expectException(LimitReachedException::class);
         for ($i = 1; $i < $siteMapFile->maxEntriesCount + 2; $i++) {
             $siteMapFile->writeUrl('http://test.url');
         }
@@ -154,7 +155,7 @@ class FileTest extends TestCase
     {
         $siteMapFile = $this->createSiteMapFile();
 
-        $this->expectException('yii\base\InvalidArgumentException');
+        $this->expectException(\yii\base\InvalidArgumentException::class);
 
         $siteMapFile->writeUrl('http://test.url', [
             'invalidOption' => 'some-value',
