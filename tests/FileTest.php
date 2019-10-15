@@ -286,9 +286,21 @@ class FileTest extends TestCase
     }
 
     /**
-     * @depends testWriteUrl
+     * dataProvider for testWriteInMemory
      */
-    public function testWriteInMemory()
+    public function MemoryProvider()
+    {
+        return [
+            'without close root tag' => [false],
+            'with close root tag' => [true],
+        ];
+    }
+
+    /**
+     * @depends testWriteUrl
+     * @dataProvider MemoryProvider
+     */
+    public function testWriteInMemory($closeRootTag = false)
     {
         $siteMapFile = $this->createSiteMapFile();
 
@@ -296,9 +308,13 @@ class FileTest extends TestCase
 
         $siteMapFile->writeUrl('http://example.com/foo');
 
-        $fileContent = $siteMapFile->getContent();
+        $fileContent = $siteMapFile->getContent($closeRootTag);
 
         $this->assertContains('<?xml', $fileContent);
         $this->assertContains('http://example.com/foo', $fileContent);
+
+        if ($closeRootTag) {
+            $this->assertContains('/urlset', $fileContent);
+        }
     }
 }

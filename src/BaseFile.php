@@ -319,13 +319,18 @@ abstract class BaseFile extends BaseObject
 
     /**
      * Returns content of this file.
+     * @param bool $closeRootTag need to close root tag
      * @return string this file content.
      * @since 1.1.0
      */
-    public function getContent()
+    public function getContent($closeRootTag = false)
     {
         if ($this->_fileHandler === null) {
             return file_get_contents($this->getFullFileName());
+        }
+
+        if ($closeRootTag) {
+            $this->beforeClose();
         }
 
         fseek($this->_fileHandler, 0);

@@ -1,6 +1,10 @@
 Yii 2 Site Map extension Change Log
 ===================================
 
+1.1.1 under development
+---------------------
+- Enh: Close root tag in `getContent` method (shurik2k5)
+
 1.1.0, August 2, 2019
 ---------------------
 

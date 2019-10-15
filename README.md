@@ -168,24 +168,22 @@ class SiteController extends Controller
 {
     public function actionSitemap()
     {
-        // get content from cache:
-        $content = Yii::$app->cache->get('sitemap.xml');
-        if ($content === false) {
-            // if no cached value exists - create an new one
-            // create sitemap file in memory:
-            $sitemap = new File();
-            $sitemap->fileName = 'php://memory';
-            
-            // write your site URLs:
-            $sitemap->writeUrl(['site/index'], ['priority' => '0.9']);
-            // ...
-            
-            // get generated content:
-            $content = $sitemap->getContent();
-
-            // save generated content to cache
-            Yii::$app->cache->set('sitemap.xml', $content);
-        }
+        // get content from cache, if no cached value exists - create an new one
+        $content = Yii::$app->cache->getOrSet('sitemap.xml', function() {
+                // create sitemap file in memory:
+                $sitemap = new File();
+                $sitemap->fileName = 'php://memory';
+                
+                // write your site URLs:
+                $sitemap->writeUrl(['site/index'], ['priority' => '0.9']);
+                // ...
+                
+                // get generated content:
+                $closeRootTag = true; //if need close root tag before generate sitemap
+                $content = $sitemap->getContent($closeRootTag);
+    
+                return $content;
+            }, 60*60*24); //cache 24 hours
 
         // send sitemap content to the user agent:
         $response = Yii::$app->getResponse();
