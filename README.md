@@ -10,8 +10,8 @@ This extension provides support for site map and site map index files generating
 
 For license information check the [LICENSE](LICENSE.md)-file.
 
-[![Latest Stable Version](https://poser.pugx.org/yii2tech/sitemap/v/stable.png)](https://packagist.org/packages/yii2tech/sitemap)
-[![Total Downloads](https://poser.pugx.org/yii2tech/sitemap/downloads.png)](https://packagist.org/packages/yii2tech/sitemap)
+[![Latest Stable Version](https://img.shields.io/packagist/v/yii2tech/sitemap.svg)](https://packagist.org/packages/yii2tech/sitemap)
+[![Total Downloads](https://img.shields.io/packagist/dt/yii2tech/sitemap.svg)](https://packagist.org/packages/yii2tech/sitemap)
 [![Build Status](https://travis-ci.org/yii2tech/sitemap.svg?branch=master)](https://travis-ci.org/yii2tech/sitemap)
 
 
@@ -56,7 +56,7 @@ $siteMapFile->writeUrl(['site/contact']);
 $siteMapFile->close();
 ```
 
-In case you put sitemap generation into console command, you will need to manually configure URL manager
+In case you put sitemap generation into a console command, you will need to manually configure URL manager
 parameters for it. For example:
 
 ```php
@@ -66,7 +66,7 @@ return [
     'id' => 'my-console-application',
     'components' => [
         'urlManager' => [
-            'hostInfo' => 'http://example.com',
+            'hostInfo' => 'https://example.com',
             'baseUrl' => '/',
             'scriptUrl' => '/index.php',
         ],
@@ -86,19 +86,20 @@ It is up to you how you split your URLs between different site map files, howeve
 or `\yii2tech\sitemap\File::getIsEntriesLimitReached()` method to check count of already written entries.
 
 For example: assume we have an 'item' table, which holds several millions of records, each of which has a detail
-view page at web application. In this case generating site map files for such pages may look like following:
+view page at the web application. In this case generating site map files for such pages may look like following:
 
 ```php
 <?php
 
-use yii2tech\sitemap\File;
 use app\models\Item;
+use yii2tech\sitemap\File;
 
 $query = Item::find()->select(['slug'])->asArray();
 
 $siteMapFileCount = 0;
 foreach ($query->each() as $row) {
     if (empty($siteMapFile)) {
+        // if there is no active file - create one with unique name:
         $siteMapFile = new File();
         $siteMapFileCount++;
         $siteMapFile->fileName = 'item_' . $siteMapFileCount . '.xml';
@@ -106,6 +107,7 @@ foreach ($query->each() as $row) {
 
     $siteMapFile->writeUrl(['item/view', 'slug' => $row['slug']]);
     if ($siteMapFile->getIsEntriesLimitReached()) {
+        // once file is full - close it, allowing creating a new one at the next cycle iteration:
         unset($siteMapFile);
     }
 }
