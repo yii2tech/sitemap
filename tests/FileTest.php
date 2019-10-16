@@ -300,5 +300,7 @@ class FileTest extends TestCase
 
         $this->assertContains('<?xml', $fileContent);
         $this->assertContains('http://example.com/foo', $fileContent);
+        $this->assertContains('<urlset ', $fileContent);
+        $this->assertContains('</urlset>', $fileContent);
     }
 }

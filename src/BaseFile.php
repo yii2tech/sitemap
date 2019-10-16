@@ -219,24 +219,40 @@ abstract class BaseFile extends BaseObject
     }
 
     /**
-     * Close the related file if it was opened.
-     * @throws Exception if file exceed max allowed size.
+     * Finishes writing the related file and closes it, if it has been opened.
+     * @throws LimitReachedException if file exceed max allowed size.
      * @return bool success.
      */
     public function close()
     {
         if ($this->_fileHandler) {
             $this->beforeClose();
+
+            $this->closeInternal();
+        }
+
+        return true;
+    }
+
+    /**
+     * Closes the related file, if it has been opened.
+     * @throws LimitReachedException if file exceed max allowed size.
+     * @since 1.1.0
+     */
+    protected function closeInternal()
+    {
+        if ($this->_fileHandler) {
+            $fileStats = fstat($this->_fileHandler);
+            $fileSize = (isset($fileStats['size'])) ? $fileStats['size'] : 0;
+
             fclose($this->_fileHandler);
             $this->_fileHandler = null;
             $this->_entriesCount = 0;
-            $fileSize = @filesize($this->getFullFileName());
+
             if ($fileSize > $this->maxFileSize) {
                 throw new LimitReachedException('File "'.$this->getFullFileName().'" has exceed the size limit of "' . $this->maxFileSize . '": actual file size: "'.$fileSize.'".');
             }
         }
-
-        return true;
     }
 
     /**
@@ -319,7 +335,9 @@ abstract class BaseFile extends BaseObject
 
     /**
      * Returns content of this file.
+     * This method closes the related file.
      * @return string this file content.
+     * @throws LimitReachedException if file exceed max allowed size.
      * @since 1.1.0
      */
     public function getContent()
@@ -328,11 +346,15 @@ abstract class BaseFile extends BaseObject
             return file_get_contents($this->getFullFileName());
         }
 
+        $this->beforeClose();
+
         fseek($this->_fileHandler, 0);
 
         $content = stream_get_contents($this->_fileHandler);
 
         fseek($this->_fileHandler, 0, SEEK_END);
+
+        $this->closeInternal();
 
         return $content;
     }

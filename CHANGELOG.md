@@ -1,6 +1,12 @@
 Yii 2 Site Map extension Change Log
 ===================================
 
+1.1.1 Under Development
+-----------------------
+
+- Bug #7: Fixed content returned by `File::getContent()` does not contain closing tag and footer (klimov-paul)
+
+
 1.1.0, August 2, 2019
 ---------------------
 
